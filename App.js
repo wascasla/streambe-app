@@ -1,33 +1,41 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator  } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Login } from './screens/Login';
 import { List } from './screens/List';
 import { Icon } from 'react-native-elements';
+import { Detail } from './screens/Detail';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useState } from 'react';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+const LoginS = createStackNavigator();
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator screenOptions={{
-          headerStyle: {
-            backgroundColor: '#F55F5F',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          tabBarStyle: {
-            backgroundColor: '#F55F5F',
-          },
-          tabBarInactiveTintColor: '#fff', 
-        }}>
-        <Tab.Screen name='Login' component={Login} />
-        <Tab.Screen name='Muestras' component={''} />
-        <Tab.Screen name='Home' component={List} 
-          options={{
+const LoginStack = () => {  
+    <LoginS.Navigator screenOptions={{    
+      headerShown: false}}>
+      <LoginS.Screen name='Login' component={Login} />
+    </LoginS.Navigator>
+  
+}
+
+const HomeStack = () => (
+  <Stack.Navigator screenOptions={{
+    headerStyle: {
+      backgroundColor: '#F55F5F',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+    tabBarStyle: {
+      backgroundColor: '#F55F5F',
+    },
+    tabBarInactiveTintColor: '#fff', 
+  }}>
+    <Stack.Screen name='List' component={List} options={{
             headerTitle: 'Tu lista de contactos',
             headerLeft: () => (
               <View style={{ marginLeft: 10 }}>
@@ -51,12 +59,37 @@ export default function App() {
                 onPress={() => {}}
               />
               </View>
-            ),
-            tabBarIcon: (props) => (
-            <Icon type="feather" name='home' color={props.color} />
-          )}}/>
+            )}}/>
+    <Stack.Screen name='Detail' component={Detail} />
+  </Stack.Navigator>
+);
+
+export default function App() {
+  const [isLoggin, setIsLoggin] = useState(true);
+  return (
+    <NavigationContainer>      
+      <Tab.Navigator screenOptions={{    
+        headerShown: false,      
+          headerStyle: {
+            backgroundColor: '#F55F5F',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          tabBarStyle: {
+            backgroundColor: '#F55F5F',
+          },
+          tabBarInactiveTintColor: '#fff', 
+        }}>        
+        <Tab.Screen name='Muestras' component={''} />
+        <Tab.Screen name='Home' component={HomeStack} options={{          
+          tabBarIcon: (props) => (
+          <Icon type="feather" name='home' color={props.color} />
+        )
+        }} />
           <Tab.Screen name='Vademecum' component={''} />
-      </Tab.Navigator>
+      </Tab.Navigator> 
     </NavigationContainer>
   );
 }
