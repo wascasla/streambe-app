@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 
-export const Login = ({navigation}) => {
+export const Login = ({navigation, setIsLoggedIn}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Aquí puedes agregar la lógica para verificar las credenciales,
-    // pero como mencionaste que usarías datos harcodeados, no es necesario en este caso.
-    // Simplemente navegamos al Home.
-    navigation.navigate('Home');
-
+    setIsLoggedIn(true);
+    SecureStore.setItemAsync('isLoggedIn', 'true')
+    .catch(error => console.error('Error storing authentication status:', error));
   };
 
   return (

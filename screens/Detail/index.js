@@ -1,58 +1,142 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { Icon } from 'react-native-elements';
-import { useRoute } from '@react-navigation/native';
+import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Linking,
+} from "react-native";
+import { Icon } from "react-native-elements";
+import { useRoute } from "@react-navigation/native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { DetailContact } from "../../components/DetailContact";
 
 export const Detail = () => {
-    const route = useRoute();
-    const { item } = route.params;
+  const route = useRoute();
+  const { item } = route.params;
+
+  const handleCall = () => {
+    Linking.openURL(`tel:${item.phone}`);
+  };
+
+  const handleWhatsApp = () => {
+    Linking.openURL(`whatsapp://send?phone=${item.phone}`);
+  };
+
+  const handleEmail = () => {
+    Linking.openURL(`mailto:${item.email}`);
+  };
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', paddingTop: 20 }}>
-       
-      
-      {/* Imagen del usuario */}
-      <Image source={{ uri: item.photo }} style={{ width: 150, height: 150, borderRadius: 75, marginTop: 20 }} />
-      <Text  style={{ color: 'black', fontWeight: 'bold' }}>{item.name+' '+item.surnames} </Text>
-      {/* Botones de acción */}
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "flex-start",
+        paddingTop: 20,
+      }}
+    >
+      {item.photo ? (
+        <Image
+          source={{ uri: item.photo }}
+          style={styles.photo}
+        />
+      ) : (
+        <MaterialIcons
+          name="person"
+          size={120}
+          color="black"
+          style={styles.icon}
+        />
+      )}
+
+      <Text style={styles.name}>
+        {item.name + " " + item.surnames}{" "}
+      </Text>
+      <View
+        style={styles.containerBtn}
+      >
         <View>
-        <TouchableOpacity style={{ backgroundColor: '#F55F5F', borderRadius: 50, paddingVertical: 5, paddingHorizontal: 5 }}>        
-            <Icon type="Ionicons" name='call' color="white" size={20} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.actionBtn}
+            onPress={handleCall}
+          >
+            <Icon type="Ionicons" name="call" color="white" size={20} />
+          </TouchableOpacity>
         </View>
         <View>
-        <TouchableOpacity style={{ backgroundColor: '#F55F5F', borderRadius:50, paddingVertical: 5, paddingHorizontal: 5 }}>
-            <Icon type="Fontisto" name='email' color="white" size={20} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.actionBtn}
+            onPress={handleEmail}
+          >
+            <Icon type="Fontisto" name="email" color="white" size={20} />
+          </TouchableOpacity>
         </View>
         <View>
-        <TouchableOpacity style={{ backgroundColor: '#F55F5F', borderRadius: 50, paddingVertical: 5, paddingHorizontal: 5 }}>
-            <Icon type="font-awesome" name='whatsapp' color="white" size={20} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.actionBtn}
+            onPress={handleWhatsApp}
+          >
+            <Icon type="font-awesome" name="whatsapp" color="white" size={20} />
+          </TouchableOpacity>
         </View>
       </View>
-      
-      {/* Detalles del contacto */}
-      <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
-        <DetailRow title="Fecha de Nacimiento" value="01/01/1990" icon="calendar" />
-        <DetailRow title="Género" value="Masculino" icon="user" />
-        <DetailRow title="Profesión" value="Arquitecto" icon="briefcase" />
+
+      <View style={{ width: "100%", marginTop: 20, paddingHorizontal: 20 }}>
+        <DetailContact
+          title="Fecha de Nacimiento"
+          value={item.birthDate}
+          icon="calendar"
+        />
+        <DetailContact title="Género" value={item.gender === 'FEMALE' ? 'Femenino' : 'Masculino'} icon="user" />
+        <DetailContact title="Profesión" value={item.profesion} icon="briefcase" />
       </View>
-      
-      {/* Botón de eliminar contacto */}
-      <TouchableOpacity style={{ backgroundColor: '#F55F5F', borderRadius: 10, paddingVertical: 10, paddingHorizontal: 20, marginTop: 50 }}>
-        <Text style={{ color: 'white', textAlign: 'center' }}>Eliminar contacto</Text>
+
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#F55F5F",
+          borderRadius: 20,
+          paddingVertical: 10,
+          paddingHorizontal: 20,
+          marginTop: 50,
+          width: "80%",
+          alignSelf: "center",
+        }}
+      >
+        <Text style={{ color: "white", textAlign: "center" }}>
+          Eliminar de mi lista
+        </Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-const DetailRow = ({ title, value, icon }) => {
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-      <Icon type="feather" name={icon} color="#000" size={20} />
-      <Text style={{ marginLeft: 10, flex: 1 }}>{title}</Text>
-      <Text>{value}</Text>
-    </View>
-  );
-};
+const styles = StyleSheet.create({
+  icon: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    marginTop: 20,
+    textAlign: "center",
+    alignSelf: "center",
+  },
+  photo: {
+    alignSelf: "center",
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    marginTop: 20,
+  },
+  containerBtn: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginTop: 20,
+  },
+  actionBtn: {
+    backgroundColor: "#F55F5F",
+    borderRadius: 50,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+  },
+  name: { color: "black", fontWeight: "bold", textAlign: "center" }
+});

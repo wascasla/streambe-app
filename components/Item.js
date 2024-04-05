@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const Item = ({ user, onPress }) => {
@@ -11,7 +11,7 @@ const Item = ({ user, onPress }) => {
         <MaterialIcons name="person" size={50} color="black" style={styles.icon} />
       )}
       <Text style={styles.name}>{user.name+" "+user.surnames}</Text>
-      <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+      <MaterialIcons name="keyboard-arrow-right" size={40} color="#F55F5F" />
     </TouchableOpacity>
   );
 };
