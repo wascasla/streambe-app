@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { Icon } from "react-native-elements";
 
 export const DetailContact = ({ title, value, icon }) => {
@@ -11,7 +11,7 @@ export const DetailContact = ({ title, value, icon }) => {
             style={styles.subContainer}
           >
             <View style={{ flexDirection: "row" }}>
-              <Icon type="feather" name={icon} color="#000" size={20} />
+              <Icon type="feather" name={icon} color="#000" size={20} testID='detail-icon'/>
               <Text style={{ marginLeft: 10, fontWeight: "bold" }}>{title} </Text>
             </View>
             <Text>{value}</Text>

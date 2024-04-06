@@ -4,11 +4,11 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 const Item = ({ user, onPress }) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity style={styles.container} onPress={onPress} testID='item'>
         {user.photo ? (
-        <Image source={{ uri: user.photo }} style={styles.photo} />
+        <Image source={{ uri: user.photo }} style={styles.photo} testID="user-photo"/>
       ) : (
-        <MaterialIcons name="person" size={50} color="black" style={styles.icon} />
+        <MaterialIcons name="person" size={50} color="black" style={styles.icon} testID="default-icon"/>
       )}
       <Text style={styles.name}>{user.name+" "+user.surnames}</Text>
       <MaterialIcons name="keyboard-arrow-right" size={40} color="#F55F5F" />
